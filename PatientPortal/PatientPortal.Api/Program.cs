@@ -10,16 +10,17 @@ using PatientPortal.Infrastructure;
 using Serilog;
 using Serilog.Events;
 
-
 Env.Load();
 
 var configuration = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddEnvironmentVariables()
     .Build();
 
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(configuration)
     .CreateBootstrapLogger();
+
 try
 {
     var builder = WebApplication.CreateBuilder(args);
@@ -39,14 +40,13 @@ try
         b.RegisterModule(new InfrastructureModule());
         b.RegisterModule(new ApiModule());
     });
-    
+
     // Add services to the container.
     var connectionString= builder.Configuration
         .GetRequiredSection(ConnectionStringOptions.SectionName)
         .GetValue<string>(nameof(ConnectionStringOptions.PatientPortalDb));
 
     var migrationAssembly = typeof(ApplicationDbContext).Assembly.GetName().Name;
-    
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
         options.UseSqlServer(connectionString, 
