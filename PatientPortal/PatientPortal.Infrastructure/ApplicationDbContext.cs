@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PatientPortal.Domain.Allergies;
 using PatientPortal.Domain.DiseaseInfo;
 using PatientPortal.Domain.NCD;
-using PatientPortal.Domain.Patient;
+using PatientPortal.Domain.PatientAggregate;
 using PatientPortal.Infrastructure.Configurations;
 using PatientPortal.Infrastructure.IdentityMembers;
 

@@ -1,4 +1,4 @@
-﻿namespace PatientPortal.Domain.Patient;
+﻿namespace PatientPortal.Domain.PatientAggregate;
 
 public sealed class Patient(
     string name,
@@ -22,6 +22,17 @@ public sealed class Patient(
     public Guid DiseaseInfoId { get; set; }
     public IList<NcdDetail> NcdDetails { get; set; }
     public IList<AllergiesDetail> AllergiesDetails { get; set; }
+    
+    public void AddNcdDetail(IList<NcdDetail> ncdDetail)
+    {
+        NcdDetails = ncdDetail;
+    }
+    
+    public void AddAllergiesDetail(IList<AllergiesDetail> allergiesDetail)
+    {
+        AllergiesDetails = allergiesDetail;
+    }
+    
 }
 
 public enum Epilepsy

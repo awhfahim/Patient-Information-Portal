@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PatientPortal.Domain.Patient;
+using PatientPortal.Domain.PatientAggregate;
 
 namespace PatientPortal.Infrastructure.Configurations;
 

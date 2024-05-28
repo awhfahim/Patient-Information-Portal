@@ -1,10 +1,13 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using DotNetEnv;
+using FluentValidation.AspNetCore;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using PatientPortal.Api;
 using PatientPortal.Api.Extensions;
 using PatientPortal.Api.Options;
+using PatientPortal.Api.Validators.DIExtensionsForFluentValidator;
 using PatientPortal.Application;
 using PatientPortal.Infrastructure;
 using Serilog;
@@ -59,6 +62,14 @@ try
          options.UseLoggerFactory(LoggerFactory.Create(b => b.AddConsole())); // Log more details
         ArgumentNullException.ThrowIfNull(connectionString, nameof(ConnectionStringOptions));
     });
+     
+    builder.Services.AddMapster();
+    builder.Services.MapsterConfig();
+    
+    //Add FluentValidation
+    builder.Services.AddFluentValidationAutoValidation(s => s.DisableDataAnnotationsValidation = false)
+        .AddFluentValidationClientsideAdapters();
+    builder.Services.AddFluentValidationServices();
     
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -1,4 +1,4 @@
-﻿namespace PatientPortal.Domain.Patient;
+﻿namespace PatientPortal.Domain.PatientAggregate;
 
 public sealed class AllergiesDetail(Guid patientId, Guid allergyId) : IEntity<Guid>
 {

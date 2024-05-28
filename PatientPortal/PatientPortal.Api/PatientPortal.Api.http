@@ -1,6 +1,31 @@
-@PatientPortal.Api_HostAddress = http://localhost:5021
+@PatientPortal.Api_HostAddress = https://localhost:7236
 
 GET {{PatientPortal.Api_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+POST {{PatientPortal.Api_HostAddress}}/api/Patients/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "Name": "John",
+  "Age": "24",
+  "Gender": "Male",
+  "BloogGroup": "A+",
+  "Address": "Dhaka",
+  "Phone": "01700000000",
+  "EpilepsyStatus": "No",
+  "DiseaseInfoId": "76BCA6B9-C184-43BB-9109-798BAE857E69",
+  "ncdDetails": [
+    {
+      "id": "65881413-E179-4B60-98C1-4198A9334383"
+    }
+  ],
+  "allergiesDetails": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+    }
+  ]
+}

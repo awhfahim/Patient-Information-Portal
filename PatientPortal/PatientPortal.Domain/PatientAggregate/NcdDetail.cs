@@ -1,4 +1,4 @@
-﻿namespace PatientPortal.Domain.Patient;
+﻿namespace PatientPortal.Domain.PatientAggregate;
 
 public sealed class NcdDetail(Guid patientId, Guid ncdId) : IEntity<Guid>
 {
