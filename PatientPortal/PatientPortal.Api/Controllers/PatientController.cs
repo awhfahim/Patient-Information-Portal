@@ -24,7 +24,7 @@ namespace PatientPortal.Api.Controllers
                 return CreatedAtAction("GetPatients", "Patient", new { Id = result.Value }, result.Value);
             
             logger.LogError(result.FirstError.Description);
-            return StatusCode(StatusCodes.Status500InternalServerError, result.FirstError.Description);
+            return StatusCode(StatusCodes.Status500InternalServerError, result.FirstError.Code);
         }
         
         [HttpGet("{Id:guid}")]

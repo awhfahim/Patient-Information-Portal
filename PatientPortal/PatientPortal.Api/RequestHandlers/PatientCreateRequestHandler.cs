@@ -21,11 +21,7 @@ public class PatientCreateRequestHandler
     public Guid DiseaseInfoId { get; set; }
     public IList<NcdDetailDto> NcdDetails { get; set; }
     public IList<AllergiesDetailDto> AllergiesDetails { get; set; }
-
-    public PatientCreateRequestHandler()
-    {
-        
-    }
+    public PatientCreateRequestHandler(){}
     public PatientCreateRequestHandler(IPatientManagementService patientManagementService, IMapper mapper)
     {
         _patientManagementService = patientManagementService;

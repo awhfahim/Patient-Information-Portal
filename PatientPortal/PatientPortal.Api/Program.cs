@@ -5,6 +5,7 @@ using FluentValidation.AspNetCore;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using PatientPortal.Api;
+using PatientPortal.Api.ExceptionHandlers;
 using PatientPortal.Api.Extensions;
 using PatientPortal.Api.Options;
 using PatientPortal.Api.Validators.DIExtensionsForFluentValidator;
@@ -72,12 +73,18 @@ try
     builder.Services.AddFluentValidationServices();
     
     builder.Services.AddControllers();
+    
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
+    
+    // Add Exception Handling
+    builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+    builder.Services.AddProblemDetails();
 
     var app = builder.Build();
-
+    
+    app.UseExceptionHandler();
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
