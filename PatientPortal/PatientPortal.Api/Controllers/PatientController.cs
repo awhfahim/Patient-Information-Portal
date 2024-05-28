@@ -1,4 +1,5 @@
 using Autofac;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using PatientPortal.Api.RequestHandlers;
 
@@ -7,7 +8,7 @@ namespace PatientPortal.Api.Controllers
     [Produces("application/json")]
     [Consumes("application/json")]
     [Route("api/[controller]s")]
-    [ApiController]
+    [ApiController, EnableCors("AllowAll")]
     public class PatientController(ILogger<PatientController> logger, ILifetimeScope scope) : ControllerBase
     {
         [HttpPost]

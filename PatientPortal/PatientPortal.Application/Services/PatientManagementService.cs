@@ -19,9 +19,9 @@ public class PatientManagementService(IApplicationUnitOfWork unitOfWork, IMapper
             patient.Id = guidProvider.GetGuid();
 
             patient.AllergiesDetails = patientCreateDto.AllergiesDetails
-                .Select(allergiesDetail => new AllergiesDetail(patient.Id, allergiesDetail.Id)).ToList();
+                .Select(allergiesDetail => new AllergiesDetail(patient.Id, Guid.Parse(allergiesDetail))).ToList();
             patient.NcdDetails = patientCreateDto.NcdDetails
-                .Select(ncdDetail => new NcdDetail(patient.Id, ncdDetail.Id)).ToList();
+                .Select(ncdDetail => new NcdDetail(patient.Id, Guid.Parse(ncdDetail))).ToList();
 
             await unitOfWork.PatientRepository.AddAsync(patient).ConfigureAwait(false);
             await unitOfWork.SaveAsync().ConfigureAwait(false);

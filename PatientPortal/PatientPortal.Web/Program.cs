@@ -1,7 +1,14 @@
+using PatientPortal.Web.Models;
+using PatientPortal.Web.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<ApiService>();
+builder.Services.AddScoped<PatientCreateModel>();
 
 var app = builder.Build();
 

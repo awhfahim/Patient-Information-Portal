@@ -1,0 +1,199 @@
+﻿@model PatientCreateModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+@section Styles
+{
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light gray background */
+        }
+        .card {
+            margin-top: 50px;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title mb-0">Save Patient Information</h4>
+        </div>
+        <div class="card-body">
+            <form id="patientForm" asp-controller="Patient" asp-action="CreatePatient" asp-antiforgery="true">
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label">Patient Name <span class="text-danger">*</span></label>
+                    <input type="text" asp-for="Name" class="form-control" id="patientName" placeholder="Enter patient name">
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label asp-for="Age" class="form-label">Age <span class="text-danger">*</span></label>
+                        <input type="number" asp-for="Age" class="form-control" id="patientAge" placeholder="Enter patient name">
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <label asp-for="Gender" class="form-label">Gender <span class="text-danger">*</span></label>
+                        <select id="patientGender" asp-for="Gender" name="Gender" class="form-control">
+                            <option> </option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Binary">Binary</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <label asp-for="BloodGroup" class="form-label">Blood Group <span class="text-danger">*</span></label>
+                        <select id="patientBG" asp-for="BloodGroup" name="BloodGroup" class="form-control">
+                            <option> </option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B-">B-</option>
+                            <option value="B+">B+</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="AB-">AB-</option>
+                            <option value="AB+">AB+</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="PhoneNumber" class="form-label">Number <span class="text-danger">*</span></label>
+                    <input type="text" asp-for="PhoneNumber" class="form-control" id="number" placeholder="Enter Phone Number">
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="Address" class="form-label">Address <span class="text-danger">*</span></label>
+                    <input type="text" asp-for="Address" class="form-control" id="address" placeholder="Enter disease name">
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="DiseaseInfoId" class="form-label">Disease Info <span class="text-danger">*</span></label>
+                    <select asp-for="DiseaseInfoId" class="form-control" asp-items="ViewBag.DiseaseInfo"></select>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="EpilepsyStatus" class="form-label">Epilepsy <span class="text-danger">*</span></label>
+                    <select id="epilepsy" asp-for="EpilepsyStatus" name="EpilepsyStatus" class="form-control">
+                        <option> </option>
+                        <option value="1">Yes</option>
+                        <option value="2">No</option>
+                    </select>
+                </div>
+                
+                <div class="d-flex mb-3 align-items-center">
+                    <select id="box1" asp-for="NcdDetails" name="NcdDetails" class="form-select" multiple size="5">
+                        @foreach (var option in @ViewBag.NcdModels)
+                        {
+                            <option value="@option.Id">@option.Name</option>
+                        }
+                    </select>
+
+                    <div class="d-flex flex-column mx-3">
+                        <button id="add" class="btn btn-primary mb-2">Add ➡️</button>
+                        <button id="remove" class="btn btn-secondary">⬅️ Remove</button>
+                    </div>
+
+                    <select id="box2" asp-for="NcdDetails" name="NcdDetails" class="form-select" multiple size="5">
+                    </select>
+                </div>
+                
+                <div class="d-flex mb-3 align-items-center">
+                    <select id="box3" asp-for="AllergiesDetails" name="AllergiesDetails" class="form-select" multiple size="5">
+                        @foreach (var option in @ViewBag.AllergieModel)
+                        {
+                            <option value="@option.Id">@option.Name</option>
+                        }
+                    </select>
+
+                    <div class="d-flex flex-column mx-3">
+                        <button id="add2" class="btn btn-primary mb-2">Add ➡️</button>
+                        <button id="remove2" class="btn btn-secondary">⬅️ Remove</button>
+                    </div>
+
+                    <select id="box4" asp-for="AllergiesDetails" name="AllergiesDetails" class="form-select" multiple size="5">
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+    <script>
+        $('#patientForm').on('submit', function() {
+            $('#box4 option').prop('selected', true);
+            $('#box2 option').prop('selected', true);
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+
+            $('#add').on('click', function(e) {
+                let selectedOption = $('#box1 option:selected');
+                $('#box2').append(selectedOption);
+                $('#box2 option:selected').prop('selected', false);
+                
+                $('<input>').attr({
+                    type: 'hidden',
+                    id: 'hiddenInput' + selectedOption.val(),
+                    name: 'SelectedNcds',
+                    value: selectedOption.val()
+                }).appendTo('form');
+                
+                e.preventDefault();
+            });
+            
+            $('#add2').on('click', function(e) {
+                let selectedOption = $('#box3 option:selected');
+                $('#box4').append(selectedOption);
+                $('#box4 option:selected').prop('selected', false);
+                
+                $('<input>').attr({
+                    type: 'hidden',
+                    id: 'hiddenInput' + selectedOption.val(),
+                    name: 'SelectedAllergies',
+                    value: selectedOption.val()
+                }).appendTo('form');
+                
+                e.preventDefault();
+            });
+
+            $('#remove').on('click', function (e) {
+                let selectedOption = $('#box2 option:selected');
+                $('#box1').append(selectedOption);
+                $('#box1 option:selected').prop('selected', false);
+                
+                $('#hiddenInput' + selectedOption.val()).remove();
+                
+                e.preventDefault();
+            });
+            
+            $('#remove2').on('click', function (e) {
+                let selectedOption = $('#box4 option:selected');
+                $('#box3').append(selectedOption);
+                $('#box3 option:selected').prop('selected', false);
+                
+                $('#hiddenInput' + selectedOption.val()).remove();
+                
+                e.preventDefault();
+            });
+        });
+    </script>
+}
+

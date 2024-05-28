@@ -37,6 +37,7 @@ public static class MapsterExtension
                 src.Age,
                 src.Gender,
                 src.BloodGroup,
+                src.DiseaseInfoId,
                 (Epilepsy)src.EpilepsyStatus,
                 src.Address,
                 src.PhoneNumber

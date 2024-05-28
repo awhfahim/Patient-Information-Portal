@@ -5,6 +5,7 @@ public sealed class Patient(
     uint age,
     string gender,
     string bloodGroup,
+    Guid diseaseInfoId,
     Epilepsy epilepsyStatus,
     string? address = null,
     string? phoneNumber = null)
@@ -18,8 +19,8 @@ public sealed class Patient(
     public string? Address { get; } = address;
     public string? PhoneNumber { get; } = phoneNumber;
     public Guid Id { get; set; }
-    
-    public Guid DiseaseInfoId { get; set; }
+
+    public Guid DiseaseInfoId { get; set; } = diseaseInfoId;
     public IList<NcdDetail> NcdDetails { get; set; }
     public IList<AllergiesDetail> AllergiesDetails { get; set; }
     
@@ -37,6 +38,6 @@ public sealed class Patient(
 
 public enum Epilepsy
 {
-    Yes,
-    No
+    Yes = 1,
+    No = 2
 } 

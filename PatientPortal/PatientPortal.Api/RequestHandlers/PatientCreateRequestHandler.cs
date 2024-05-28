@@ -15,12 +15,12 @@ public class PatientCreateRequestHandler
     public uint Age { get; set; }
     public string Gender { get; set; }
     public string BloodGroup { get; set; }
-    public Epilepsy EpilepsyStatus { get; set; }
+    public int EpilepsyStatus { get; set; }
     public string? Address { get; set; }
     public string? PhoneNumber { get; set; }
     public Guid DiseaseInfoId { get; set; }
-    public IList<NcdDetailDto> NcdDetails { get; set; }
-    public IList<AllergiesDetailDto> AllergiesDetails { get; set; }
+    public List<string> NcdDetails { get; set; }
+    public List<string> AllergiesDetails { get; set; }
     public PatientCreateRequestHandler(){}
     public PatientCreateRequestHandler(IPatientManagementService patientManagementService, IMapper mapper)
     {

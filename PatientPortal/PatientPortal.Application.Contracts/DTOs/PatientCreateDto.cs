@@ -5,16 +5,16 @@ public record PatientCreateDto(
     uint Age,
     string Gender,
     string BloodGroup,
-    Epilepsy EpilepsyStatus,
+    int EpilepsyStatus,
     Guid DiseaseInfoId,
-    IList<NcdDetailDto> NcdDetails,
-    IList<AllergiesDetailDto> AllergiesDetails,
+    IList<string> NcdDetails,
+    IList<string> AllergiesDetails,
     string? PhoneNumber = null,
     string? Address = null
 );
 
 public enum Epilepsy
 {
-    Yes,
-    No
+    Yes = 1,
+    No = 2
 }

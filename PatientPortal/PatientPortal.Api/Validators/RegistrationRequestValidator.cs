@@ -12,7 +12,7 @@ public class PatientRequestHandlerValidator : AbstractValidator<PatientCreateReq
             .NotEmpty().WithMessage("Name is Required")
             .MinimumLength(2).WithMessage("Name must be at least 2 characters long")
             .MaximumLength(50).WithMessage("Name must be less than 50 characters long")
-            .Must(x => x.All(char.IsLetter)).WithMessage("Name must contain only letters");
+            .Must(x => x.All(c => char.IsLetter(c) || char.IsWhiteSpace(c))).WithMessage("Name must contain only letters");
 
         RuleFor(x => x.Age)
             .NotEmpty().WithMessage("Age is required");
@@ -28,7 +28,7 @@ public class PatientRequestHandlerValidator : AbstractValidator<PatientCreateReq
         
         RuleFor(x => x.EpilepsyStatus)
             .NotEmpty().WithMessage("EpilepsyStatus is required")
-            .Must(x => x == Epilepsy.Yes || x == Epilepsy.No)
+            .Must(x => x == 1 || x == 2)
             .WithMessage("Invalid EpilepsyStatus");
     }
 }
