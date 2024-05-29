@@ -12,7 +12,7 @@ namespace PatientPortal.Api.Controllers
     public class PatientController(ILogger<PatientController> logger, ILifetimeScope scope) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> AddPatientAsync([FromBody] PatientCreateRequestHandler patient)
+        public async Task<IActionResult> AddPatientAsync([FromBody] PatientCreateRequestHandler patient, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {
@@ -20,17 +20,28 @@ namespace PatientPortal.Api.Controllers
             }
             patient.Resolve(scope);
             
-            var result = await patient.HandleAsync().ConfigureAwait(false);
+            var result = await patient.HandleAsync(cancellationToken).ConfigureAwait(false);
             if (!result.IsError)
-                return CreatedAtAction("GetPatients", "Patient", new { Id = result.Value }, result.Value);
+                return CreatedAtAction("GetById", "Patient", new { Id = result.Value }, result.Value);
             
             logger.LogError(result.FirstError.Description);
             return StatusCode(StatusCodes.Status500InternalServerError, result.FirstError.Code);
         }
         
-        [HttpGet("{Id:guid}")]
-        public async Task<IActionResult> GetPatientsAsync(Guid Id)
+        [HttpGet]
+        public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
+            var handler = scope.Resolve<GetPatientRequestHandler>();
+            var patients = await handler.GetPatientsAsync(cancellationToken);
+            return patients.IsError ? StatusCode(StatusCodes.Status500InternalServerError, patients.FirstError.Code) 
+                : Ok(patients.Value);
+        }
+        
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
+        {
+            //var handler = scope.Resolve<GetPatientRequestHandler>();
+            //var patient = await handler.GetPatientAsync(id, cancellationToken);
             return Ok();
         }
     }

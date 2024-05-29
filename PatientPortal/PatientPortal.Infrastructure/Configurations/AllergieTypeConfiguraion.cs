@@ -4,9 +4,9 @@ using PatientPortal.Domain.Allergies;
 
 namespace PatientPortal.Infrastructure.Configurations;
 
-public class AllergieTypeConfiguration : IEntityTypeConfiguration<Allergies>
+public class AllergieTypeConfiguration : IEntityTypeConfiguration<Allergie>
 {
-    public void Configure(EntityTypeBuilder<Allergies> builder)
+    public void Configure(EntityTypeBuilder<Allergie> builder)
     {
         builder
             .ToTable("Allergies")

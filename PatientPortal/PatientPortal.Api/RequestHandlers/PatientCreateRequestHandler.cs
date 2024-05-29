@@ -34,9 +34,9 @@ public class PatientCreateRequestHandler
         _mapper = scope.Resolve<IMapper>();
     }
 
-    public async Task<ErrorOr<Guid>> HandleAsync()
+    public async Task<ErrorOr<Guid>> HandleAsync(CancellationToken cancellationToken)
     {
         var patientCreateDto = _mapper.Map<PatientCreateDto>(this);
-        return await _patientManagementService.AddPatientAsync(patientCreateDto).ConfigureAwait(false);
+        return await _patientManagementService.AddPatientAsync(patientCreateDto, cancellationToken).ConfigureAwait(false);
     }
 }

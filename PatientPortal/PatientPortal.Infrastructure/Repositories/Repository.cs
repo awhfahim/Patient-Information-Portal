@@ -19,18 +19,18 @@ namespace PatientPortal.Infrastructure.Repositories
             _dbSet = _dbContext.Set<TEntity>();
         }
         
-        public virtual async Task AddAsync(TEntity entity)
+        public virtual async Task AddAsync(TEntity entity, CancellationToken cancellationToken)
         {
-            await _dbSet.AddAsync(entity).ConfigureAwait(false);
+            await _dbSet.AddAsync(entity, cancellationToken).ConfigureAwait(false);
         }
 
-        public virtual async Task RemoveAsync(TKey id)
+        public virtual async Task RemoveAsync(TKey id, CancellationToken cancellationToken)
         {
             var entityToDelete = await _dbSet.FindAsync(id).ConfigureAwait(false);
-            if (entityToDelete != null) await RemoveAsync(entityToDelete).ConfigureAwait(false);
+            if (entityToDelete != null) await RemoveAsync(entityToDelete, cancellationToken).ConfigureAwait(false);
         }
 
-        public virtual async Task RemoveAsync(TEntity entityToDelete)
+        public virtual async Task RemoveAsync(TEntity entityToDelete, CancellationToken cancellationToken)
         {
             await Task.Run(() =>
             {
@@ -39,15 +39,15 @@ namespace PatientPortal.Infrastructure.Repositories
                     _dbSet.Attach(entityToDelete);
                 }
                 _dbSet.Remove(entityToDelete);
-            }).ConfigureAwait(false);
+            }, cancellationToken).ConfigureAwait(false);
         }
 
-        public virtual async Task RemoveAsync(Expression<Func<TEntity, bool>> filter)
+        public virtual async Task RemoveAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken)
         {
              await Task.Run(() =>
              {
                  _dbSet.RemoveRange(_dbSet.Where(filter));
-             }).ConfigureAwait(false);
+             }, cancellationToken).ConfigureAwait(false);
         }
 
         public virtual async Task EditAsync(TEntity entityToUpdate)
@@ -64,15 +64,15 @@ namespace PatientPortal.Infrastructure.Repositories
             return await _dbSet.FindAsync(id) ?? throw new InvalidOperationException();
         }
 
-        public virtual async Task<int> GetCountAsync(Expression<Func<TEntity, bool>>? filter = null)
+        public virtual async Task<int> GetCountAsync(Expression<Func<TEntity, bool>>? filter = null, CancellationToken cancellationToken = default)
         {
             IQueryable<TEntity> query = _dbSet;
             int count;
 
             if (filter != null)
-                count = await query.CountAsync(filter).ConfigureAwait(false);
+                count = await query.CountAsync(filter, cancellationToken).ConfigureAwait(false);
             else
-                count = await query.CountAsync().ConfigureAwait(false);
+                count = await query.CountAsync(cancellationToken).ConfigureAwait(false);
 
             return count;
         }
@@ -101,10 +101,10 @@ namespace PatientPortal.Infrastructure.Repositories
             return query.ToListAsync();
         }
 
-        public virtual async Task<IList<TEntity>> GetAllAsync()
+        public virtual async Task<IList<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             IQueryable<TEntity> query = _dbSet;
-            return await query.ToListAsync();
+            return await query.ToListAsync(cancellationToken);
         }
 
         public virtual async Task<(IList<TEntity> data, int total, int totalDisplay)> GetAsync(

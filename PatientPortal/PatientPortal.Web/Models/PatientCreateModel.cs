@@ -18,6 +18,7 @@ public class PatientCreateModel
     
     public async Task<List<DiseaseInfoModel>> FetchDiseaseInfo(HttpClient client)
     {
+        //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await _tokenService.GetTokenAsync());
         var response = await client.GetAsync("https://localhost:7236/api/diseases").ConfigureAwait(false);
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();

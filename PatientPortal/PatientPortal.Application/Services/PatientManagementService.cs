@@ -5,13 +5,14 @@ using PatientPortal.Application.Contracts.DTOs;
 using PatientPortal.Application.Contracts.ServiceInterfaces;
 using PatientPortal.Application.Contracts.Utilities;
 using PatientPortal.Domain.PatientAggregate;
+using PatientPortal.Domain.Primitives;
 
 namespace PatientPortal.Application.Services;
 
-public class PatientManagementService(IApplicationUnitOfWork unitOfWork, IMapper mapper, 
+public class PatientManagementService(IApplicationUnitOfWork unitOfWork, 
     IGuidProvider guidProvider) : IPatientManagementService
 {
-    public async Task<ErrorOr<Guid>> AddPatientAsync(PatientCreateDto patientCreateDto)
+    public async Task<ErrorOr<Guid>> AddPatientAsync(PatientCreateDto patientCreateDto, CancellationToken cancellationToken)
     {
         try
         {
@@ -23,7 +24,7 @@ public class PatientManagementService(IApplicationUnitOfWork unitOfWork, IMapper
             patient.NcdDetails = patientCreateDto.NcdDetails
                 .Select(ncdDetail => new NcdDetail(patient.Id, Guid.Parse(ncdDetail))).ToList();
 
-            await unitOfWork.PatientRepository.AddAsync(patient).ConfigureAwait(false);
+            await unitOfWork.PatientRepository.AddAsync(patient, cancellationToken).ConfigureAwait(false);
             await unitOfWork.SaveAsync().ConfigureAwait(false);
 
             return patient.Id;
@@ -33,4 +34,10 @@ public class PatientManagementService(IApplicationUnitOfWork unitOfWork, IMapper
             return Error.Unexpected("Unexpected Error Occured", e.Message);
         }
     }
-}
+
+    public  async Task<ErrorOr<List<GetPatientDto>>> GetPatientsAsync(CancellationToken cancellationToken)
+    {
+      var patients = await unitOfWork.PatientRepository.GetAllPatientsAsync(cancellationToken).ConfigureAwait(false);
+      return await patients.BuildAdapter().AdaptToTypeAsync<List<GetPatientDto>>().ConfigureAwait(false);
+    }
+} 

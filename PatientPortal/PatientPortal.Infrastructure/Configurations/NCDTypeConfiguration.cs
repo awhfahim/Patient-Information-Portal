@@ -4,9 +4,9 @@ using PatientPortal.Domain.NCD;
 
 namespace PatientPortal.Infrastructure.Configurations;
 
-public class NcdTypeConfiguration : IEntityTypeConfiguration<NCD>
+public class NcdTypeConfiguration : IEntityTypeConfiguration<Ncd>
 {
-    public void Configure(EntityTypeBuilder<NCD> builder)
+    public void Configure(EntityTypeBuilder<Ncd> builder)
     {
         builder
             .ToTable("NCDs")

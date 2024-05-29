@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using PatientPortal.Application.Contracts.ServiceInterfaces;
 
 namespace PatientPortal.Api.Controllers
 {
@@ -6,22 +8,31 @@ namespace PatientPortal.Api.Controllers
     [Produces("application/json")]
     [Consumes("application/json")]
     [ApiController]
-    public class AllergieController : ControllerBase
+    public class AllergieController(ILogger<AllergieController> logger, 
+        IAllergieManagementService service) : ControllerBase
     {
         [HttpGet]
-        public IActionResult GetAllergies()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
-            List<AllergieModel> allergies = [
-                new AllergieModel{Id = Guid.NewGuid(), Name = "Dust Mite"}, 
-                new AllergieModel{Id = Guid.NewGuid(), Name = "Pollen"},
-            new AllergieModel(){Id = Guid.NewGuid(), Name = "Peanut"}
-            ];
-            return Ok(allergies);
+            var allergies = await service.GetAllergiesAsync(cancellationToken)
+                .ConfigureAwait(false);
+            
+            if (allergies.IsError)
+            {
+                logger.Log(LogLevel.Error, allergies.FirstError.Code);
+                return StatusCode(StatusCodes.Status500InternalServerError, allergies.FirstError.Code);
+            }
+            
+            if(allergies.Value.IsNullOrEmpty())
+            {
+                return NoContent();
+            }
+            
+            return Ok(allergies.Value);
         }
     }
-    public class AllergieModel
-    {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-    }
+    
 }

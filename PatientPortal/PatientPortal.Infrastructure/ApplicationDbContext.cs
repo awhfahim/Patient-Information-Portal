@@ -12,9 +12,9 @@ namespace PatientPortal.Infrastructure;
 public class ApplicationDbContext(DbContextOptions options) : IdentityDbContext<AppUser, AppRole, Guid>(options)
 {
     public DbSet<Patient> Patients { get; set; }
-    public DbSet<NCD> Ncds { get; set; }
+    public DbSet<Ncd> Ncds { get; set; }
     public DbSet<DiseaseInfo> DiseaseInfos { get; set; }
-    public DbSet<Allergies> Allergies { get; set; }
+    public DbSet<Allergie> Allergies { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
