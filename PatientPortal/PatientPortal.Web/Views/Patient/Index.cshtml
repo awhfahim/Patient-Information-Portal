@@ -1,0 +1,27 @@
+﻿@model IAsyncEnumerable<PatientModel?>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    @await foreach (var patient in Model)
+    {
+        <div class="col-sm-4" style="width:300px; height: 500px">
+            
+            <div class="card mb-2">
+                <img src="~/Images/user-icon-png-person-user-profile-icon-20.png" class="card-img-top rounded-circle" alt="Patient Image">
+                <div class="card-body">
+                    <h5 class="card-title text-black">@patient?.Name</h5>
+                    <p class="card-text">
+                        Age: @patient?.Gender <br>
+                        Number: @patient?.PhoneNumber <br>
+                        Address: @patient?.Address
+                    </p>
+                    <a class="btn btn-outline-primary" href="/Patient/Get-By-Id?id=@patient?.Id">View Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

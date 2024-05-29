@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 
-namespace PatientPortal.Web.Models;
+namespace PatientPortal.Web.Models.Patients;
 
 public class PatientCreateModel
 {

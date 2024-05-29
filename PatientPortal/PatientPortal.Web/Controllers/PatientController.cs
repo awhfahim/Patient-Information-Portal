@@ -1,8 +1,9 @@
 using System.Text;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
-using PatientPortal.Web.Models;
+using PatientPortal.Web.Models.Patients;
 
 namespace PatientPortal.Web.Controllers;
 public class PatientController(HttpClient httpClient) : Controller
@@ -36,7 +37,7 @@ public class PatientController(HttpClient httpClient) : Controller
     
         try
         {
-            var response = await httpClient.PostAsync("https://localhost:7236/api/Patients", data);
+            var response = await httpClient.PostAsJsonAsync("https://localhost:7236/api/Patients", data);
 
             if (response.IsSuccessStatusCode)
             {
@@ -54,6 +55,29 @@ public class PatientController(HttpClient httpClient) : Controller
         {
             return View("Error");
         }
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> Index()
+    {
+        var response =  httpClient
+            .GetFromJsonAsAsyncEnumerable<PatientModel>("https://localhost:7236/api/Patients", new JsonSerializerOptions()
+                {
+                    PropertyNameCaseInsensitive = true, 
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                    
+                });
+        return View(response);
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var response = await httpClient.GetAsync($"https://localhost:7236/api/Patients/{id}");
+        var responseBody = await response.Content.ReadAsStringAsync();
+        var patient = JsonConvert.DeserializeObject<PatientModel>(responseBody);
+        
+        return View(patient);
     }
 }
 

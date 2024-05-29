@@ -1,4 +1,5 @@
-﻿@model PatientCreateModel
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model PatientCreateModel
 
 @{
     ViewBag.Title = "title";
@@ -155,7 +156,7 @@
                     name: 'SelectedNcds',
                     value: selectedOption.val()
                 }).appendTo('form');
-                
+
                 e.preventDefault();
             });
             
@@ -170,7 +171,7 @@
                     name: 'SelectedAllergies',
                     value: selectedOption.val()
                 }).appendTo('form');
-                
+
                 e.preventDefault();
             });
 

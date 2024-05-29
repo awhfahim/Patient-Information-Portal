@@ -1,22 +1,35 @@
-using PatientPortal.Web.Models;
-using PatientPortal.Web.Services;
+using System.Text.Json;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
+using PatientPortal.Web.Models.Patients;
+using PatientPortal.Web.Others;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
 builder.Services.AddHttpClient();
-builder.Services.AddScoped<ApiService>();
+//builder.Services.AddScoped<ApiService>();
 builder.Services.AddScoped<PatientCreateModel>();
+
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.ConstraintMap["slugify"] = typeof(SlugifyParameterTransformer);
+    options.AppendTrailingSlash = false;
+});
+
+builder.Services.AddControllersWithViews(opts =>
+    {
+        opts.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
+        opts.OutputFormatters.RemoveType<StringOutputFormatter>();
+        opts.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider());
+    }
+).AddJsonOptions(opts => { opts.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase; });
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -29,6 +42,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller:slugify=Home}/{action:slugify=Index}/{id?}");
 
 app.Run();
+
