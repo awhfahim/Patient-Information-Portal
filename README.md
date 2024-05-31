@@ -76,7 +76,21 @@ Step 3: Run the migration to create the necessary database schema:
 
 ### Step 4: Accessing the Application
 
-- Open your browser and navigate to the MVC application, typically running on `https://localhost:7229/`.
+Once the application is running, you can access it through the following URLs:
+
+- Index Page: https://localhost:7229/
+
+    - Displays information of patients inside cards.
+    - Each card has a "View Details" button to show all the details of a patient.
+    
+ - Create New Patient: https://localhost:7229/patient/create-patient
+    -Opens a page for creating a new patient.
+   
+- Patient Profile: https://localhost:7229/Patient/Profile?id={patientId}
+
+    - Shows the profile of a patient.
+    - Provides options to edit or delete the patient.
+      
 - Ensure the Web API project is running, usually accessible Swagger page at `https://localhost:7236/swagger/index.html`.
 
 ## Project Structure
