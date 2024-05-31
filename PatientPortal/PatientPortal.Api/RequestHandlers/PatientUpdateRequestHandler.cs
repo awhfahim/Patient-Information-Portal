@@ -19,7 +19,6 @@ public class PatientUpdateRequestHandler
     public int EpilepsyStatus { get; set; }
     public string? Address { get; set; }
     public string? PhoneNumber { get; set; }
-    public Guid DiseaseInfoId { get; set; }
     
     public PatientUpdateRequestHandler(){}
     public PatientUpdateRequestHandler(IPatientManagementService patientManagementService, IMapper mapper)

@@ -79,9 +79,6 @@ public class PatientController(HttpClient httpClient) : Controller
     public async Task<IActionResult> Profile(Guid id)
     {
         var response = await httpClient.GetFromJsonAsync<PatientModel>($"https://localhost:7236/api/Patients/{id}");
-        //var responseBody = await response.Content.ReadAsStringAsync();
-       // var patient = JsonConvert.DeserializeObject<PatientModel>(responseBody);
-        
         return View(response);
     }
 
@@ -104,6 +101,25 @@ public class PatientController(HttpClient httpClient) : Controller
             Type = ResponseTypes.Danger
         });
         return RedirectToAction("Index");
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> Edit(Guid id)
+    {
+        var response = await httpClient.GetFromJsonAsync<PatientUpdateModel>($"https://localhost:7236/api/Patients/{id}");
+        return View(response);
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(PatientUpdateModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+        var response = await httpClient.PutAsJsonAsync($"https://localhost:7236/api/Patients", model);
+        var content = await response.Content.ReadAsStringAsync();
+        return RedirectToAction("Profile", new { id = model.Id });
     }
 }
 

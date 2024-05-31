@@ -79,26 +79,30 @@
                     </ul>
                 </div>
             </div>
-            <button type="submit" class="btn-outline-primary btn mb-2 g-2">Edit</button>
+            <button type="submit" id="editPatient" class="btn-outline-primary btn mb-2 g-2">Edit</button>
             <button type="button" id="deletePatientButton" class="btn btn-danger mb-2">Delete</button>
         </div>
     </div>
 </div>
 @section Scripts {
     <script>
-        
-    $(document).ready(function() {
-        // Handle the click event of the Delete button
-        $('#deletePatientButton').click(function() {
-            $('#deleteId').val('@Model.Id');
-            $('#modal-default').modal('show');
-        });
+        $(document).ready(function() {
+            // Handle the click event of the Delete button
+            $('#deletePatientButton').click(function() {
+                $('#deleteId').val('@Model.Id');
+                $('#modal-default').modal('show');
+            });
 
-        $('#deleteButton').click(function() {
-            $('#deleteForm').submit();
+            $('#deleteButton').click(function() {
+                $('#deleteForm').submit();
+            });
         });
-        
-    });
-
+    </script>
+    
+    <script>
+        // Handle the click event of the Edit button
+        $('#editPatient').click(function() {
+            window.location.href = '/Patient/Edit?id=' + '@Model.Id';
+        });
     </script>
 }
