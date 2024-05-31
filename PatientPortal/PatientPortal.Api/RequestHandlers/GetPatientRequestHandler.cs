@@ -22,9 +22,7 @@ public class GetPatientRequestHandler(IPatientManagementService patientManagemen
          return patientManagementService.GetPatientsAsync(cancellationToken);
     }
 
-    public async Task<IErrorOr<GetPatientRequestHandler>> GetPatientAsync(Guid id, CancellationToken cancellationToken)
-    {
-        var patient = await patientManagementService.GetPatientAsync(id, cancellationToken).ConfigureAwait(false);
-        return null;
-    }
+    public Task<ErrorOr<GetPatientByIdDto>> GetPatientAsync(Guid id, CancellationToken cancellationToken)
+        => patientManagementService.GetPatientAsync(id, cancellationToken);
+
 }

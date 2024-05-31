@@ -6,5 +6,6 @@ namespace PatientPortal.Domain.Repositories;
 public interface IPatientRepository : IRepositoryBase<Patient, Guid>
 {
     Task<List<PatientData>> GetAllPatientsAsync(CancellationToken cancellationToken);
-    object GetByIdAsync2(Guid id, CancellationToken cancellationToken);
+    Task<(PatientData, List<string> AllergyNames, List<string> NcdNames)?> MyGetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<Patient> FetchByIdAsync(Guid id, CancellationToken cancellationToken);
 }

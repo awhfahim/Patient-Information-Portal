@@ -1,16 +1,17 @@
 ﻿using Autofac;
 using ErrorOr;
-using Mapster;
 using MapsterMapper;
 using PatientPortal.Application.Contracts.DTOs;
 using PatientPortal.Application.Contracts.ServiceInterfaces;
 
 namespace PatientPortal.Api.RequestHandlers;
 
-public class PatientCreateRequestHandler
+public class PatientUpdateRequestHandler
 {
     private IPatientManagementService _patientManagementService;
     private IMapper _mapper;
+    
+    public Guid Id { get; set; }
     public string Name { get; set; }
     public uint Age { get; set; }
     public string Gender { get; set; }
@@ -19,10 +20,9 @@ public class PatientCreateRequestHandler
     public string? Address { get; set; }
     public string? PhoneNumber { get; set; }
     public Guid DiseaseInfoId { get; set; }
-    public List<string> NcdDetails { get; set; }
-    public List<string> AllergiesDetails { get; set; }
-    public PatientCreateRequestHandler(){}
-    public PatientCreateRequestHandler(IPatientManagementService patientManagementService, IMapper mapper)
+    
+    public PatientUpdateRequestHandler(){}
+    public PatientUpdateRequestHandler(IPatientManagementService patientManagementService, IMapper mapper)
     {
         _patientManagementService = patientManagementService;
         _mapper = mapper;
@@ -33,10 +33,11 @@ public class PatientCreateRequestHandler
         _patientManagementService = scope.Resolve<IPatientManagementService>();
         _mapper = scope.Resolve<IMapper>();
     }
+    
 
-    public async Task<ErrorOr<Guid>> HandleAsync(CancellationToken cancellationToken)
+    public async Task<ErrorOr<Guid>> UpdatePatientAsync(CancellationToken cancellationToken)
     {
-        var patientCreateDto = _mapper.Map<PatientCreateDto>(this);
-        return await _patientManagementService.AddPatientAsync(patientCreateDto, cancellationToken).ConfigureAwait(false);
+        var patientUpdateDto = _mapper.Map<PatientUpdateDto>(this);
+        return await _patientManagementService.UpdatePatientAsync(patientUpdateDto, cancellationToken);
     }
 }

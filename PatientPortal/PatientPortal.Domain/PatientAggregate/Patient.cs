@@ -11,13 +11,13 @@ public sealed class Patient(
     string? phoneNumber = null)
     : IEntity<Guid>
 {
-    public string Name { get; } = name;
-    public uint Age { get; } = age;
-    public string Gender { get; } = gender;
-    public string BloodGroup { get; } = bloodGroup;
-    public Epilepsy EpilepsyStatus { get; } = epilepsyStatus;
-    public string? Address { get; } = address;
-    public string? PhoneNumber { get; } = phoneNumber;
+    public string Name { get; set; } = name;
+    public uint Age { get; set; } = age;
+    public string Gender { get; set; } = gender;
+    public string BloodGroup { get; set; } = bloodGroup;
+    public Epilepsy EpilepsyStatus { get; set; } = epilepsyStatus;
+    public string? Address { get; set; } = address;
+    public string? PhoneNumber { get; set; } = phoneNumber;
     public Guid Id { get; set; }
 
     public Guid DiseaseInfoId { get; set; } = diseaseInfoId;

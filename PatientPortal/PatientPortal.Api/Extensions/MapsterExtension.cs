@@ -42,5 +42,6 @@ public static class MapsterExtension
                 src.Address,
                 src.PhoneNumber
             ));
+
     }
 }

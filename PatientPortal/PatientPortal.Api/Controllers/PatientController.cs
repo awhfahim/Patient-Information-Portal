@@ -2,6 +2,7 @@ using Autofac;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using PatientPortal.Api.RequestHandlers;
+using PatientPortal.Application.Contracts.ServiceInterfaces;
 
 namespace PatientPortal.Api.Controllers
 {
@@ -12,7 +13,7 @@ namespace PatientPortal.Api.Controllers
     public class PatientController(ILogger<PatientController> logger, ILifetimeScope scope) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> AddPatientAsync([FromBody] PatientCreateRequestHandler patient, CancellationToken cancellationToken)
+        public async Task<IActionResult> Post([FromBody] PatientCreateRequestHandler patient, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {
@@ -42,7 +43,29 @@ namespace PatientPortal.Api.Controllers
         {
             var handler = scope.Resolve<GetPatientRequestHandler>();
             var patient = await handler.GetPatientAsync(id, cancellationToken);
-            return Ok();
+            return patient.IsError ? StatusCode(StatusCodes.Status500InternalServerError, patient.FirstError.Code) 
+                : Ok(patient.Value);
+        }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
+        {
+            var service = scope.Resolve<IPatientManagementService>();
+            var result = await service.DeletePatientAsync(id, cancellationToken);
+            return result.IsError ? StatusCode(StatusCodes.Status500InternalServerError, result.Errors) 
+                : Ok(result.Value);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] PatientUpdateRequestHandler model, CancellationToken cancellationToken)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            model.Resolve(scope);
+            var result = await model.UpdatePatientAsync(cancellationToken);
+            return result.IsError? StatusCode(StatusCodes.Status500InternalServerError, result.Errors) : Ok(result.Value);
         }
     }
 }

@@ -18,10 +18,10 @@ public class PatientManagementService(IApplicationUnitOfWork unitOfWork,
             patient.Id = guidProvider.GetGuid();
 
             patient.AllergiesDetails = patientCreateDto.AllergiesDetails
-                .Select(allergiesDetail => new AllergiesDetail(patient.Id, Guid.Parse(allergiesDetail))).ToList();
+                .Select(allergiesId => new AllergiesDetail(patient.Id, Guid.Parse(allergiesId))).ToList();
             
             patient.NcdDetails = patientCreateDto.NcdDetails
-                .Select(ncdDetail => new NcdDetail(patient.Id, Guid.Parse(ncdDetail))).ToList();
+                .Select(ncdId => new NcdDetail(patient.Id, Guid.Parse(ncdId))).ToList();
 
             await unitOfWork.PatientRepository.AddAsync(patient, cancellationToken).ConfigureAwait(false);
             await unitOfWork.SaveAsync().ConfigureAwait(false);
@@ -40,9 +40,41 @@ public class PatientManagementService(IApplicationUnitOfWork unitOfWork,
       return await patients.BuildAdapter().AdaptToTypeAsync<List<GetPatientDto>>().ConfigureAwait(false);
     }
 
-    public async Task<IErrorOr<GetPatientByIdDto>> GetPatientAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ErrorOr<GetPatientByIdDto>> GetPatientAsync(Guid id, CancellationToken cancellationToken)
     {
-        unitOfWork.PatientRepository.GetByIdAsync2(id, cancellationToken);
-        return null;
+        try
+        {
+            var p = await unitOfWork.PatientRepository.MyGetByIdAsync(id, cancellationToken).ConfigureAwait(false);
+            var result = await p.Value.Item1.BuildAdapter().AdaptToTypeAsync<GetPatientByIdDto>();
+            result.AllergiesDetails = p.Value.AllergyNames;
+            result.NcdDetails = p.Value.NcdNames;
+            return result;
+        }
+        catch (Exception exception)
+        {
+            return Error.Failure("Unable to Fetch Data");
+        }
+    }
+
+    public async Task<ErrorOr<Guid>> DeletePatientAsync(Guid id, CancellationToken cancellationToken)
+    {  
+        await unitOfWork.PatientRepository.RemoveAsync(id, cancellationToken).ConfigureAwait(false);
+        await unitOfWork.SaveAsync();
+        return id;
+    }
+
+    public async Task<ErrorOr<Guid>> UpdatePatientAsync(PatientUpdateDto patientUpdateDto, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var patient = await unitOfWork.PatientRepository.GetByIdAsync(patientUpdateDto.Id, cancellationToken);
+            patientUpdateDto.Adapt(patient);
+            await unitOfWork.SaveAsync();
+            return patient.Id;
+        }
+        catch (Exception e)
+        {
+            return Error.Failure("Failed To Update Patient");
+        }
     }
 } 
