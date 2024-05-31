@@ -7,7 +7,7 @@ It also heavily employs the Unit of Work and Repository patterns to manage data 
 
 Before you begin, ensure you have met the following requirements:
 
-.NET SDK 8 (Download from the official .NET website)
+.NET SDK 8 
 
 You need to create a [.env] file in the root of PatientPortal.Api project 
 
@@ -21,11 +21,13 @@ Clone this repository to your local machine using the following command:
 git clone https://github.com/awhfahim/Patient-Information-Portal
 ```
 
-### Step 2: Database Migration
+### Step 2: Create and Configure the .env File
 
 Create a .env file with the following content:
 
-# Serilog Email Sink Options
+To configure the Serilog Email Sink, set the following environment variables:
+
+```ini
 SERILOGEMAILSINKOPTIONS__EMAILFROM="f@gmail.com"
 SERILOGEMAILSINKOPTIONS__EMAILTO="c@gmail.com"
 SERILOGEMAILSINKOPTIONS__EMAILSUBJECT="Patient Portal Error"
@@ -34,10 +36,15 @@ SERILOGEMAILSINKOPTIONS__SMTPPORT="587"
 SERILOGEMAILSINKOPTIONS__SMTPUSERNAME="2e41d5385f620c"
 SERILOGEMAILSINKOPTIONS__SMTPPASSWORD="2b6d27adf1826a"
 SERILOGEMAILSINKOPTIONS__MINIMUMLOGLEVEL="Error"
-
+```
+To configure the database connection string
+```int
 # Connection Strings
 CONNECTIONSTRINGS__PATIENTPORTALDB="Server=.\\SQLEXPRESS;Database=PatientPortal;User Id=fahim;Password=123456;Trust Server Certificate=True;"
+```
 
+Step 3: Database Migration
+Run the migration to create the necessary database schema:
 
 1. Set the correct database connection string in the `.env` file.
 
