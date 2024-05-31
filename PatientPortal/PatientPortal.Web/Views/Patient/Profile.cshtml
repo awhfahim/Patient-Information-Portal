@@ -1,0 +1,74 @@
+﻿@model PatientPortal.Web.Models.Patients.PatientModel?
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3>Patient Profile</h3>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5>Name:</h5>
+                    <p>{{Name}}</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Age:</h5>
+                    <p>{{Age}}</p>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5>Gender:</h5>
+                    <p>{{Gender}}</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Blood Group:</h5>
+                    <p>{{BloodGroup}}</p>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5>Epilepsy Status:</h5>
+                    <p>{{EpilepsyStatus}}</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Address:</h5>
+                    <p>{{Address}}</p>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5>Phone Number:</h5>
+                    <p>{{PhoneNumber}}</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Disease Info ID:</h5>
+                    <p>{{DiseaseInfoId}}</p>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5>NCD Details:</h5>
+                    <ul>
+                        {{#each NcdDetails}}
+                        <li>{{this}}</li>
+                        {{/each}}
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>Allergies Details:</h5>
+                    <ul>
+                        {{#each AllergiesDetails}}
+                        <li>{{this}}</li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

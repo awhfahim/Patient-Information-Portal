@@ -79,7 +79,7 @@ namespace PatientPortal.Infrastructure.Migrations
                     table.PrimaryKey("PK_AllergiesDetail", x => x.Id);
                     table.ForeignKey(
                         name: "FK_AllergiesDetail_Patients_AllergyId",
-                        column: x => x.AllergyId,
+                        column: x => x.PatientId,
                         principalTable: "Patients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);

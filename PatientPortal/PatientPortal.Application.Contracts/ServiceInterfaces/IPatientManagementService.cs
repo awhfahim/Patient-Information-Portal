@@ -7,4 +7,5 @@ public interface IPatientManagementService
 {
     Task<ErrorOr<Guid>> AddPatientAsync(PatientCreateDto patientCreateDto, CancellationToken cancellationToken);
     Task<ErrorOr<List<GetPatientDto>>> GetPatientsAsync(CancellationToken cancellationToken);
+    Task<IErrorOr<GetPatientByIdDto>> GetPatientAsync(Guid id, CancellationToken cancellationToken);
 }

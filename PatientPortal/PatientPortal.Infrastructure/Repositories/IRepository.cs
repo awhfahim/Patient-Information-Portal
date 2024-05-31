@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
 using PatientPortal.Domain;
+using PatientPortal.Domain.PatientAggregate;
 using PatientPortal.Domain.Repositories;
 
 namespace PatientPortal.Infrastructure.Repositories

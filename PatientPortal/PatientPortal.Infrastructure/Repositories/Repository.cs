@@ -59,9 +59,9 @@ namespace PatientPortal.Infrastructure.Repositories
             }).ConfigureAwait(false);
         }
 
-        public virtual async Task<TEntity> GetByIdAsync(TKey id)
+        public virtual async Task<TEntity> GetByIdAsync(TKey id, CancellationToken cancellationToken = default)
         {
-            return await _dbSet.FindAsync(id) ?? throw new InvalidOperationException();
+            return await _dbSet.FindAsync(id,cancellationToken) ?? throw new InvalidOperationException();
         }
 
         public virtual async Task<int> GetCountAsync(Expression<Func<TEntity, bool>>? filter = null, CancellationToken cancellationToken = default)
@@ -534,5 +534,6 @@ namespace PatientPortal.Infrastructure.Repositories
             if (disableTracking) data.AsNoTracking();
             return data.FirstOrDefaultAsync(cancellationToken);
         }
+
     }
 }

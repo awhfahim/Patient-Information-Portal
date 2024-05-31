@@ -40,8 +40,8 @@ namespace PatientPortal.Api.Controllers
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
         {
-            //var handler = scope.Resolve<GetPatientRequestHandler>();
-            //var patient = await handler.GetPatientAsync(id, cancellationToken);
+            var handler = scope.Resolve<GetPatientRequestHandler>();
+            var patient = await handler.GetPatientAsync(id, cancellationToken);
             return Ok();
         }
     }

@@ -27,7 +27,7 @@ public class PatientTypeConfiguration : IEntityTypeConfiguration<Patient>
         builder
             .HasMany(x => x.AllergiesDetails)
             .WithOne()
-            .HasForeignKey(x => x.AllergyId)
+            .HasForeignKey(x => x.PatientId)
             .OnDelete(deleteBehavior: DeleteBehavior.Cascade);
     }
 }

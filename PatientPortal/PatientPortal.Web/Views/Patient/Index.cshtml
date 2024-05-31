@@ -5,19 +5,21 @@
     Layout = "_Layout";
 }
 
-<div class="row">
+<div class="row mt-2">
+    <partial name="_ResponsePartial"/>
     @await foreach (var patient in Model)
     {
-        <div class="col-sm-4" style="width:300px; height: 500px">
-            
-            <div class="card mb-2">
-                <img src="~/Images/user-icon-png-person-user-profile-icon-20.png" class="card-img-top rounded-circle" alt="Patient Image">
-                <div class="card-body">
-                    <h5 class="card-title text-black">@patient?.Name</h5>
-                    <p class="card-text">
-                        Age: @patient?.Gender <br>
-                        Number: @patient?.PhoneNumber <br>
-                        Address: @patient?.Address
+        <div class="col-sm-4" style="width:300px; height:400px;">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header text-center bg-primary text-white">
+                    <img src="~/Images/user-icon-png-person-user-profile-icon-20.png" class="card-img-top rounded-circle mx-auto d-block" alt="Patient Image" style="width: 100px; height: 100px;">
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title text-black fw-bold">@patient?.Name</h5>
+                    <p class="card-text text-secondary">
+                        <strong>Gender:</strong> @patient?.Gender <br>
+                        <strong>Number:</strong> @patient?.PhoneNumber <br>
+                        <strong>Address:</strong> @patient?.Address
                     </p>
                     <a class="btn btn-outline-primary" href="/Patient/Get-By-Id?id=@patient?.Id">View Details</a>
                 </div>

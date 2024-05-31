@@ -13,7 +13,7 @@ namespace PatientPortal.Domain.Repositories
         IList<TEntity> GetAll();
         Task<IList<TEntity>> GetAllAsync(CancellationToken cancellationToken);
         TEntity GetById(TKey id);
-        Task<TEntity> GetByIdAsync(TKey id);
+        Task<TEntity> GetByIdAsync(TKey id, CancellationToken cancellationToken);
         int GetCount(Expression<Func<TEntity, bool>> filter = null);
         Task<int> GetCountAsync(Expression<Func<TEntity, bool>>? filter = null, CancellationToken cancellationToken = default);
         void Remove(Expression<Func<TEntity, bool>> filter);

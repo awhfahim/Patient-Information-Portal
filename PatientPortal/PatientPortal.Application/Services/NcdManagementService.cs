@@ -19,7 +19,7 @@ public class NcdManagementService(IApplicationUnitOfWork unitOfWork) : INcdManag
 
     public async Task<ErrorOr<string>> UpdateNcdAsync(UpdateNcdDto ncdDto, CancellationToken cancellationToken)
     {
-        var ncd = await unitOfWork.NcdRepository.GetByIdAsync(ncdDto.Id).ConfigureAwait(false);
+        var ncd = await unitOfWork.NcdRepository.GetByIdAsync(ncdDto.Id, cancellationToken).ConfigureAwait(false);
         if (ncd is null)
         {
             return Error.NotFound("Ncd not found");
@@ -32,7 +32,7 @@ public class NcdManagementService(IApplicationUnitOfWork unitOfWork) : INcdManag
 
     public async Task<ErrorOr<string>> DeleteNcdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var ncd = await unitOfWork.NcdRepository.GetByIdAsync(id).ConfigureAwait(false);
+        var ncd = await unitOfWork.NcdRepository.GetByIdAsync(id, cancellationToken).ConfigureAwait(false);
         if (ncd is null)
         {
             return Error.NotFound("Ncd not found");
@@ -44,7 +44,7 @@ public class NcdManagementService(IApplicationUnitOfWork unitOfWork) : INcdManag
 
     public async Task<ErrorOr<NcdDto>> GetNcdByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var ncd = await unitOfWork.NcdRepository.GetByIdAsync(id).ConfigureAwait(false);
+        var ncd = await unitOfWork.NcdRepository.GetByIdAsync(id, cancellationToken).ConfigureAwait(false);
         if (ncd is null)
         {
             return Error.NotFound("Ncd not found", $"Ncd not found with the related {id}");

@@ -1,11 +1,9 @@
 ﻿using ErrorOr;
 using Mapster;
-using MapsterMapper;
 using PatientPortal.Application.Contracts.DTOs;
 using PatientPortal.Application.Contracts.ServiceInterfaces;
 using PatientPortal.Application.Contracts.Utilities;
 using PatientPortal.Domain.PatientAggregate;
-using PatientPortal.Domain.Primitives;
 
 namespace PatientPortal.Application.Services;
 
@@ -21,6 +19,7 @@ public class PatientManagementService(IApplicationUnitOfWork unitOfWork,
 
             patient.AllergiesDetails = patientCreateDto.AllergiesDetails
                 .Select(allergiesDetail => new AllergiesDetail(patient.Id, Guid.Parse(allergiesDetail))).ToList();
+            
             patient.NcdDetails = patientCreateDto.NcdDetails
                 .Select(ncdDetail => new NcdDetail(patient.Id, Guid.Parse(ncdDetail))).ToList();
 
@@ -39,5 +38,11 @@ public class PatientManagementService(IApplicationUnitOfWork unitOfWork,
     {
       var patients = await unitOfWork.PatientRepository.GetAllPatientsAsync(cancellationToken).ConfigureAwait(false);
       return await patients.BuildAdapter().AdaptToTypeAsync<List<GetPatientDto>>().ConfigureAwait(false);
+    }
+
+    public async Task<IErrorOr<GetPatientByIdDto>> GetPatientAsync(Guid id, CancellationToken cancellationToken)
+    {
+        unitOfWork.PatientRepository.GetByIdAsync2(id, cancellationToken);
+        return null;
     }
 } 

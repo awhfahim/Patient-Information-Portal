@@ -1,8 +1,8 @@
-using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using PatientPortal.Web.Models;
 using PatientPortal.Web.Models.Patients;
 
 namespace PatientPortal.Web.Controllers;
@@ -31,29 +31,35 @@ public class PatientController(HttpClient httpClient) : Controller
         {
             return View(model);
         }
-        
-        var json = JsonConvert.SerializeObject(model);
-        var data = new StringContent(json, Encoding.UTF8, "application/json");
     
         try
         {
-            var response = await httpClient.PostAsJsonAsync("https://localhost:7236/api/Patients", data);
+            var response = await httpClient.PostAsJsonAsync("https://localhost:7236/api/Patients", model);
 
             if (response.IsSuccessStatusCode)
             {
-                //var responseBody = await response.Content.ReadAsStringAsync();
-                return View();
+                TempData.Put("ResponseMessage", new ResponseModel
+                {
+                    Message = "Patient created successfully",
+                    Type = ResponseTypes.Success
+                });
+
+                return RedirectToAction("Index");
             }
             else
             {
-                var responseBody = await response.Content.ReadAsStringAsync();
-                var problemDetails = JsonConvert.DeserializeObject<ProblemDetails>(responseBody);
-                return View("Error");
+                TempData.Put("ResponseMessage", new ResponseModel
+                {
+                    Message = "An error occurred while creating the patient",
+                    Type = ResponseTypes.Danger
+                });
+
+                return View("Error", new ErrorViewModel(){RequestId = "An error occurred while creating the patient"});
             }
         }
         catch (Exception ex)
         {
-            return View("Error");
+            return View("Error", new ErrorViewModel(){RequestId = "An error occurred while creating the patient"});
         }
     }
     
@@ -71,13 +77,13 @@ public class PatientController(HttpClient httpClient) : Controller
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetById(Guid id)
+    public async Task<IActionResult> Profile(Guid id)
     {
-        var response = await httpClient.GetAsync($"https://localhost:7236/api/Patients/{id}");
-        var responseBody = await response.Content.ReadAsStringAsync();
-        var patient = JsonConvert.DeserializeObject<PatientModel>(responseBody);
+        var response = await httpClient.GetFromJsonAsync<PatientModel>($"https://localhost:7236/api/Patients/{id}");
+        //var responseBody = await response.Content.ReadAsStringAsync();
+       // var patient = JsonConvert.DeserializeObject<PatientModel>(responseBody);
         
-        return View(patient);
+        return View(response);
     }
 }
 

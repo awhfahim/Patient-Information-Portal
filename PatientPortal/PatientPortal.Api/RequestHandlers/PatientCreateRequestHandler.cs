@@ -10,7 +10,6 @@ public class PatientCreateRequestHandler
 {
     private IPatientManagementService _patientManagementService;
     private IMapper _mapper;
-    
     public string Name { get; set; }
     public uint Age { get; set; }
     public string Gender { get; set; }
