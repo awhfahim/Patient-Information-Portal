@@ -7,9 +7,9 @@ It also heavily employs the Unit of Work and Repository patterns to manage data 
 
 Before you begin, ensure you have met the following requirements:
 
-.NET SDK 8 
+- .NET SDK 8 
 
-You need to create a [.env] file in the root of PatientPortal.Api project 
+- You need to create a [.env] file in the root of PatientPortal.Api project 
 
 ## Setup Instructions
 
@@ -23,7 +23,7 @@ git clone https://github.com/awhfahim/Patient-Information-Portal
 
 ### Step 2: Create and Configure the .env File
 
-Create a .env file with the following content:
+Create a .env file at the root of PatientPortal.Api Project with the following content:
 
 To configure the Serilog Email Sink, set the following environment variables:
 
