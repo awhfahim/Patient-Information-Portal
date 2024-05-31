@@ -32,19 +32,18 @@ SERILOGEMAILSINKOPTIONS__EMAILFROM="f@gmail.com"
 SERILOGEMAILSINKOPTIONS__EMAILTO="c@gmail.com"
 SERILOGEMAILSINKOPTIONS__EMAILSUBJECT="Patient Portal Error"
 SERILOGEMAILSINKOPTIONS__SMTPHOST="sandbox.smtp.mailtrap.io"
-SERILOGEMAILSINKOPTIONS__SMTPPORT="587"
-SERILOGEMAILSINKOPTIONS__SMTPUSERNAME="2e41d5385f620c"
-SERILOGEMAILSINKOPTIONS__SMTPPASSWORD="2b6d27adf1826a"
+SERILOGEMAILSINKOPTIONS__SMTPPORT=""
+SERILOGEMAILSINKOPTIONS__SMTPUSERNAME=""
+SERILOGEMAILSINKOPTIONS__SMTPPASSWORD=""
 SERILOGEMAILSINKOPTIONS__MINIMUMLOGLEVEL="Error"
 ```
-To configure the database connection string
+To configure the database connection string complete this connection string with actual values
 ```int
 # Connection Strings
-CONNECTIONSTRINGS__PATIENTPORTALDB="Server=.\\SQLEXPRESS;Database=PatientPortal;User Id=fahim;Password=123456;Trust Server Certificate=True;"
+CONNECTIONSTRINGS__PATIENTPORTALDB="Server=.\\SQLEXPRESS;Database=;User Id=;Password=;Trust Server Certificate=True;"
 ```
 
-Step 3: Database Migration
-Run the migration to create the necessary database schema:
+Step 3: Run the migration to create the necessary database schema:
 
 1. Set the correct database connection string in the `.env` file.
 
@@ -59,12 +58,12 @@ Run the migration to create the necessary database schema:
         ```json
         {
           "ConnectionStrings": {
-            "DefaultConnection": "YourDatabaseConnectionString"
+            "PatientPortalDb": "YourDatabaseConnectionString"
           }
         }
         ```
 
-2. Run the migration to create the necessary database schema:
+2. Run this migration command to create the necessary database schema:
 
     ```bash
     dotnet ef database update --project PatientPortal.Api
@@ -72,58 +71,20 @@ Run the migration to create the necessary database schema:
 
 ### Step 3: Running the Projects
 
-#### 1. Start the Web API Project
-
-1. Navigate to the API project directory:
-
-    ```bash
-    cd path/to/your-repository/YourApiProject
-    ```
-
-2. Run the Web API project:
-
-    ```bash
-    dotnet run
-    ```
-
-#### 2. Start the MVC Project
-
-1. Open a new terminal window and navigate to the MVC project directory:
-
-    ```bash
-    cd path/to/your-repository/YourMvcProject
-    ```
-
-2. Run the MVC project:
-
-    ```bash
-    dotnet run
-    ```
+- First Start the Web API Project
+- Then Start the MVC Project
 
 ### Step 4: Accessing the Application
 
-- Open your browser and navigate to the MVC application, typically running on `http://localhost:5000`.
-- Ensure the Web API project is running, usually accessible at `http://localhost:5001`.
+- Open your browser and navigate to the MVC application, typically running on `https://localhost:7229/`.
+- Ensure the Web API project is running, usually accessible Swagger page at `https://localhost:7236/swagger/index.html`.
 
 ## Project Structure
 
 The project is structured according to the Clean Architecture principles:
 
-- `Core`: Contains the domain entities and interfaces.
-- `Application`: Contains the business logic and application services.
-- `Infrastructure`: Contains data access implementations and other infrastructure concerns.
-- `API`: The Web API project.
-- `MVC`: The ASP.NET Core MVC frontend project.
-
-## Additional Information
-
-- For more details on the Clean Architecture, refer to [Clean Architecture by Robert C. Martin](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html).
-- If you encounter any issues, please [create an issue](https://github.com/your-username/your-repository/issues) in the repository.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-Feel free to customize the placeholders (`your-username`, `your-repository`, `YourApiProject`, `YourMvcProject`, etc.) with your actual project details. This README provides a clear, step-by-step guide for setting up and running the project, ensuring users can get started easily.
+- `PatientPortal.Domain`: Contains the domain entities and interfaces.
+- `PatientPortal.Application`: Contains the business logic and application services.
+- `PatientPortal.Infrastructure`: Contains data access implementations and other infrastructure concerns.
+- `PatientPortal.API`: The Web API project.
+- `PatientPortal.MVC`: The ASP.NET Core MVC frontend project.
