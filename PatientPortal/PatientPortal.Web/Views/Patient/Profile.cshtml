@@ -6,6 +6,7 @@
 }
 
 <div class="container mt-5">
+    <partial name="_ModalPartial"/>
     <div class="card">
         <div class="card-header bg-primary text-white">
             <h3>Patient Profile</h3>
@@ -14,61 +15,90 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <h5>Name:</h5>
-                    <p>{{Name}}</p>
+                    <p>@Model?.Name</p>
                 </div>
                 <div class="col-md-6">
                     <h5>Age:</h5>
-                    <p>{{Age}}</p>
+                    <p>@Model?.Age</p>
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-6">
                     <h5>Gender:</h5>
-                    <p>{{Gender}}</p>
+                    <p>@Model?.Gender</p>
                 </div>
                 <div class="col-md-6">
                     <h5>Blood Group:</h5>
-                    <p>{{BloodGroup}}</p>
+                    <p>@Model?.BloodGroup</p>
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-6">
                     <h5>Epilepsy Status:</h5>
-                    <p>{{EpilepsyStatus}}</p>
+                    @if (Model?.EpilepsyStatus == 1)
+                    {
+                        <p class="text-danger">Yes</p>
+                    }
+                    else
+                    {
+                        <p class="text-success">No</p>
+                    }
                 </div>
                 <div class="col-md-6">
                     <h5>Address:</h5>
-                    <p>{{Address}}</p>
+                    <p>@Model?.Address</p>
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-6">
                     <h5>Phone Number:</h5>
-                    <p>{{PhoneNumber}}</p>
+                    <p>@Model?.PhoneNumber</p>
                 </div>
                 <div class="col-md-6">
                     <h5>Disease Info ID:</h5>
-                    <p>{{DiseaseInfoId}}</p>
+                    <p>@Model?.DiseaseName</p>
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-6">
                     <h5>NCD Details:</h5>
                     <ul>
-                        {{#each NcdDetails}}
-                        <li>{{this}}</li>
-                        {{/each}}
+                        @foreach (var item in Model.NcdDetails)
+                        {
+                            <li>@item</li>
+                        }
                     </ul>
                 </div>
                 <div class="col-md-6">
                     <h5>Allergies Details:</h5>
                     <ul>
-                        {{#each AllergiesDetails}}
-                        <li>{{this}}</li>
-                        {{/each}}
+                        @foreach (var item in Model.AllergiesDetails)
+                        {
+                            <li>@item</li>
+                        }
                     </ul>
                 </div>
             </div>
+            <button type="submit" class="btn-outline-primary btn mb-2 g-2">Edit</button>
+            <button type="button" id="deletePatientButton" class="btn btn-danger mb-2">Delete</button>
         </div>
     </div>
 </div>
+@section Scripts {
+    <script>
+        
+    $(document).ready(function() {
+        // Handle the click event of the Delete button
+        $('#deletePatientButton').click(function() {
+            $('#deleteId').val('@Model.Id');
+            $('#modal-default').modal('show');
+        });
+
+        $('#deleteButton').click(function() {
+            $('#deleteForm').submit();
+        });
+        
+    });
+
+    </script>
+}

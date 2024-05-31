@@ -1,7 +1,6 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Newtonsoft.Json;
 using PatientPortal.Web.Models;
 using PatientPortal.Web.Models.Patients;
 
@@ -84,6 +83,27 @@ public class PatientController(HttpClient httpClient) : Controller
        // var patient = JsonConvert.DeserializeObject<PatientModel>(responseBody);
         
         return View(response);
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var response = await httpClient.DeleteAsync($"https://localhost:7236/api/Patients/{id}");
+        TempData.Put("ResponseMessage", new ResponseModel
+        {
+            Message = "Patient deleted successfully",
+            Type = ResponseTypes.Success
+        });
+        if (response.IsSuccessStatusCode)
+        {
+            return RedirectToAction("Index");
+        }
+        TempData.Put("ResponseMessage", new ResponseModel
+        {
+            Message = "An error occurred while deleting the patient",
+            Type = ResponseTypes.Danger
+        });
+        return RedirectToAction("Index");
     }
 }
 
